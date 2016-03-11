@@ -3,7 +3,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
@@ -66,6 +68,38 @@ public class BoardPanel extends JPanel {
      * The array of ttArrTiles that make up this board.
      */
     private TileType[] ttArrTiles;
+    
+    private Image imaCoheteArriba = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete1.png"));
+    
+    private Image imaCoheteDerecha = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete2.png"));
+    
+    private Image imaCoheteAbajo = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete3.png"));
+    
+    private Image imaCoheteIzquierda = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete4.png"));
+    
+    private Image imaFuego = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Fuego.png"));
+    
+    private Image imaComida = Toolkit.getDefaultToolkit().getImage(this.getClass().
+            getResource("Food.png")); 
+    
+    private Image imaBattery = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Battery.png"));
+    
+    private Image imaFuel = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Fuel.png"));  
+    
+    private Image imaTierra = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Tierra.gif"));  
+    
+    private Image imaFondo = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Fondo.png"));  
+    
+    
 		
     /**
      * Creates a new BoardPanel instance.
@@ -122,6 +156,11 @@ public class BoardPanel extends JPanel {
     public void paintComponent(Graphics g) {
 	super.paintComponent(g);
 	
+        if(imaFondo!=null) {
+                    
+            g.drawImage(imaFondo, 0, 0, 500, 500, this);
+        }
+        
 	/*
 	 * Loop through each tile on the board and draw it if it
 	 * is not null.
@@ -218,9 +257,59 @@ public class BoardPanel extends JPanel {
              * A fruit is depicted as a small red circle that with a bit of 
              * padding on each side.
              */
-            case Fruit:
-		g.setColor(Color.RED);
-		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4);
+            case Fruit1:
+                
+		/*g.setColor(Color.RED);
+		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
+                
+                if(imaComida!=null){
+                    
+                    g.drawImage(imaComida, x, y, 20,
+                            20, this);
+                }
+                  
+                
+		break;
+                
+            case Fruit2:
+                
+                /*g.setColor(Color.BLUE);
+		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
+                
+                if(imaFuel!=null){
+                    
+                    g.drawImage(imaFuel, x, y, 20,
+                            20, this); 
+                }
+                
+                
+		break;
+                
+            case Fruit3:
+                
+                /*g.setColor(Color.YELLOW);
+		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
+                
+                if(imaBattery!=null){
+                    
+                    g.drawImage(imaBattery, x, y, 20,
+                            20, this); 
+                    
+                }
+                
+                
+		break;
+            
+            case BadFruit:
+                /*g.setColor(Color.WHITE);
+		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
+                
+                if(imaTierra!=null){
+                    
+                    g.drawImage(imaTierra, x, y, 20,
+                            20, this); 
+                }
+                
 		break;
 		
             /*
@@ -228,8 +317,10 @@ public class BoardPanel extends JPanel {
              * entire tile.
              */
             case SnakeBody:
-		g.setColor(Color.GREEN);
-		g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE);
+		/*g.setColor(Color.GREEN);
+		g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE); */
+                g.drawImage(imaFuego, x, y, 20,
+                       20, this);
 		break;
 			
             /*
@@ -238,11 +329,14 @@ public class BoardPanel extends JPanel {
              */
             case SnakeHead:
 		//Fill the tile in with green.
-		g.setColor(Color.GREEN);
-		g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE);
-			
+                
+		//g.setColor(Color.GREEN);
+                
+		//g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE);
+                
+                
 		//Set the color to black so that we can start drawing the eyes.
-		g.setColor(Color.BLACK);
+		//g.setColor(Color.BLACK);
 			
 		/*
 		 * The eyes will always 'face' the direction that the snake is
@@ -273,44 +367,63 @@ public class BoardPanel extends JPanel {
 		 */
 		switch(snkGame.getDirection()) {
                     case North: {
-			int baseY = y + iEYE_SMALL_INSET;
+			/*int baseY = y + iEYE_SMALL_INSET;
 			g.drawLine(x + iEYE_LARGE_INSET,
                                    baseY, x + iEYE_LARGE_INSET,
                                    baseY + iEYE_LENGTH);
 			g.drawLine(x + iTILE_SIZE - iEYE_LARGE_INSET,
                                    baseY, x + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseY + iEYE_LENGTH);
+                                   baseY + iEYE_LENGTH);*/
+                        g.drawImage(imaCoheteArriba, x, y, 20,
+                            20, this);
+                        
+                        
 			break;
                     }
 				
                     case South: {
-			int baseY = y + iTILE_SIZE - iEYE_SMALL_INSET;
+                        
+			/*int baseY = y + iTILE_SIZE - iEYE_SMALL_INSET;
 			g.drawLine(x + iEYE_LARGE_INSET,
                                    baseY, x + iEYE_LARGE_INSET,
                                    baseY - iEYE_LENGTH);
 			g.drawLine(x + iTILE_SIZE - iEYE_LARGE_INSET,
                                    baseY, x + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseY - iEYE_LENGTH);
+                                   baseY - iEYE_LENGTH); */
+                        
+                        g.drawImage(imaCoheteAbajo, x, y, 20,
+                            20, this);
+                        
 			break;
                     }
 			
                     case West: {
-			int baseX = x + iEYE_SMALL_INSET;
+                        
+			/*int baseX = x + iEYE_SMALL_INSET;
 			g.drawLine(baseX, y + iEYE_LARGE_INSET,
                                    baseX + iEYE_LENGTH, y + iEYE_LARGE_INSET);
 			g.drawLine(baseX, y + iTILE_SIZE - iEYE_LARGE_INSET,
                                    baseX + iEYE_LENGTH,
-                                   y + iTILE_SIZE - iEYE_LARGE_INSET);
+                                   y + iTILE_SIZE - iEYE_LARGE_INSET);*/
+                        
+                        g.drawImage(imaCoheteIzquierda, x, y, 20,
+                            20, this);
+                        
 			break;
                     }
 				
                     case East: {
+                        /*
 			int baseX = x + iTILE_SIZE - iEYE_SMALL_INSET;
 			g.drawLine(baseX, y + iEYE_LARGE_INSET,
                                    baseX - iEYE_LENGTH, y + iEYE_LARGE_INSET);
 			g.drawLine(baseX, y + iTILE_SIZE - iEYE_LARGE_INSET,
                                    baseX - iEYE_LENGTH,
-                                   y + iTILE_SIZE - iEYE_LARGE_INSET);
+                                   y + iTILE_SIZE - iEYE_LARGE_INSET); */
+                        
+                        g.drawImage(imaCoheteDerecha, x, y, 20,
+                            20, this);
+                        
 			break;
                     }
 		}
