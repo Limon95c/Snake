@@ -682,7 +682,7 @@ public class SnakeGame extends JFrame {
         // Guardar longitud de lklSnake
         fileOut.println(Integer.toString(lklSnake.size()));
         
-        saveBoard(fileOut);
+        saveBoardAndLklSnake(fileOut);
         
         fileOut.close();
     }
@@ -695,7 +695,7 @@ public class SnakeGame extends JFrame {
      * @param fileOut objeto de tipo PrintWriter que mantiene el flujo de datos
      * entre un archivo y el programa
      */
-    public void saveBoard(PrintWriter fileOut) throws IOException {
+    public void saveBoardAndLklSnake(PrintWriter fileOut) throws IOException {
         // Guardar todo el lklSnake
         for(int iI = 0; iI < lklSnake.size(); iI++) {
             // Guardar X
@@ -794,26 +794,7 @@ public class SnakeGame extends JFrame {
                 bpBoard.nullTile(iJ, iI);
             }
         }
-            
-        // Cargar longitud de lklDirections
-        fileOut.println(Integer.toString(lklDirections.size()));
-            
-        // Cargar todas las direcciones como su numero ordinal del archivo
-        for(int iI = 0; iI < lklDirections.size(); iI++) {
-            fileOut.println(Integer.toString(lklDirections.get(iI).ordinal()));
-        }
-            
-        // Cargar longitud de lklSnake
-        fileOut.println(Integer.toString(lklSnake.size()));
-            
-        // Cargar todo el snake
-        for(int iI = 0; iI < lklSnake.size(); iI++) {
-            // Carga X
-            fileOut.println(Integer.toString(lklSnake.get(iI).x));
-            // Carga Y
-            fileOut.println(Integer.toString(lklSnake.get(iI).y));
-        }
-            
+        
         // Lee la siguiente linea
         String sScan = fileIn.readLine();
         // Mientras no se acabe el archivo...
