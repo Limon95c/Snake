@@ -18,5 +18,4 @@ public enum TileType {
     SnakeBody,
     
     BadFruit
-	
 }

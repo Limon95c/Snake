@@ -3,7 +3,9 @@
  * Segundo examen parcial: Snake
  * A01280927 - A01280734
  *
- * Descripción...
+ * El clasico juego de "Snake" pero con un tema espacial en el que la vibora es
+ * formada por un cohete y el fuego que deja detrás. El cohete debe recolectar
+ * bateria, comida y combustible en el espacio y evitar chocar con la tierra.
  *
  * @author Jorge Gonzalez Borboa (A01280927) - Jorge Limón Cabrera (A01280734)
  * @version 1.0
@@ -14,8 +16,17 @@ import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import javax.swing.JOptionPane;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -31,6 +42,16 @@ public class SnakeGame extends JFrame {
      * The Serial Version UID.
      */
     private static final long lSerialVersionUID = 6678292058307426314L;
+    
+    /**
+     * Objeto para escibir en archivo.
+     */
+    private PrintWriter fileOut;
+    
+    /**
+     * Objeto para leer en archivo.
+     */
+    private BufferedReader fileIn;
 
     /**
      * The number of milliseconds that should pass between each frame.
@@ -120,7 +141,7 @@ public class SnakeGame extends JFrame {
      * and sets up the controller input.
      */
     private SnakeGame() {
-	super("Snake Remake");
+	super("Rocket Snake");
 	setLayout(new BorderLayout());
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setResizable(false);
@@ -242,6 +263,44 @@ public class SnakeGame extends JFrame {
                             resetGame();
 			}
                     break;
+                    
+                    /*
+                     * Pauses the game to save it.
+                     */
+                    case KeyEvent.VK_G:
+                        if(!bIsGameOver && !bIsNewGame) {
+                            try {
+                                // Set everything to pause and saveGame()
+                                clkLogicTimer.setPaused(true);
+                                bIsPaused = true;
+                                saveGame();
+                            }
+                            catch (IOException ex) {
+                                Logger.getLogger(SnakeGame.class.getName()).log(
+                                                 Level.SEVERE, null, ex);
+                            }
+                        }
+                        break;
+                        
+                    /*
+                     * Load Game - When pressed, check to see that
+                     * we're not in a game over. If we're not,
+                     * load the game.
+                     */
+                    case KeyEvent.VK_C:
+                        if(!bIsGameOver && !bIsNewGame) {
+                            try {
+                                // Set everything to pause and loadGame()
+                                clkLogicTimer.setPaused(true);
+                                bIsPaused = true;
+                                loadGame();
+                            }
+                            catch (IOException ex) {
+                                Logger.getLogger(SnakeGame.class.getName()).log(
+                                                    Level.SEVERE, null, ex);
+                            }
+                        }
+                        break;
 		}
             }
 			
@@ -520,7 +579,7 @@ public class SnakeGame extends JFrame {
 	/*
 	 * Spawn a new fruit.
 	 */
-        for(int iI = 1 ; iI<=4 ; iI++) {
+        for(int iI = 1 ; iI <= 4 ; iI++) {
             
             switch (iI) {
                 case 1:
@@ -537,9 +596,184 @@ public class SnakeGame extends JFrame {
                 default: 
                     break;
             }
-            
         }
-	
+    }
+    
+    /**
+     * saveGame
+     * 
+     * Saves the game based on a name.
+     */
+    public void saveGame() throws IOException {
+            
+        // Pregunta el nombre del usuario para guardar
+        String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
+        // Poner todo en minusculas y agregar .txt
+        nombre = nombre.toLowerCase() + ".txt";
+            
+        // Abrir archivo
+        fileOut = new PrintWriter(new FileWriter(nombre));
+        fileOut.println(Integer.toString(this.iScore)); // Guardar score
+        // Guardar el score al agarrar el siguiente objeto bueno
+        fileOut.println(Integer.toString(this.iNextFruitScore));
+        // Guardar el numero de frutas comidas
+        fileOut.println(Integer.toString(this.iFruitsEaten));
+            
+        // Guardar longitud de lklDirections
+        fileOut.println(Integer.toString(lklDirections.size()));
+            
+        // Guardar todas las direcciones
+        for(int iI = 0; iI < lklDirections.size(); iI++) {
+            fileOut.println(Integer.toString(lklDirections.get(iI).ordinal()));
+        }
+            
+        // Guardar longitud de lklSnake
+        fileOut.println(Integer.toString(lklSnake.size()));
+        
+        saveBoard(fileOut);
+        
+        fileOut.close();
+    }
+        
+    /**
+     * saveBoard
+     * 
+     * Saves the board and it's a continuation from saveGame()
+     * 
+     * @param fileOut objeto de tipo PrintWriter que mantiene el flujo de datos
+     * entre un archivo y el programa
+     */
+    public void saveBoard(PrintWriter fileOut) throws IOException {
+        // Guardar todo el lklSnake
+        for(int iI = 0; iI < lklSnake.size(); iI++) {
+            // Guardar X
+            fileOut.println(Integer.toString(lklSnake.get(iI).x));
+            // Guardar Y
+            fileOut.println(Integer.toString(lklSnake.get(iI).y));
+        }
+            
+        // Guardar board
+        for(int iI = 0; iI < bpBoard.iROW_COUNT ; iI++) {
+            for(int iJ = 0; iJ < bpBoard.iCOL_COUNT; iJ++) {
+                if(bpBoard.getTile(iJ, iI) != null) {
+                    // Guardar X
+                    fileOut.println(Integer.toString(iI));
+                    // Guardar Y
+                    fileOut.println(Integer.toString(iJ));
+                    // Guardar tipo de tile
+                    fileOut.println(Integer.toString(
+                                        bpBoard.getTile(iJ, iI).ordinal()));
+                }
+            }
+        }
+    }
+    
+    /**
+     * loadGame
+     * 
+     * Loads the game based on a name.
+     */
+    public void loadGame() throws IOException {
+        // Pregunta el nombre del usuario para guardar
+        String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
+        // Poner todo en minusculas y agregar .txt
+        nombre = nombre.toLowerCase();
+            
+        try {
+            // Abrir archivo
+            fileIn = new BufferedReader(new FileReader(nombre + ".txt"));
+            // Cargar iScore
+            iScore = Integer.parseInt(fileIn.readLine());
+            // Cargar iNextFruitScore
+            iNextFruitScore = Integer.parseInt(fileIn.readLine());
+            // Cargar iFruitsEaten
+            iFruitsEaten = Integer.parseInt(fileIn.readLine());
+            
+            // Vaciar la lista de direcciones actuales
+            lklDirections.clear();
+            
+            // Recibir cantidad de direcciones nuevas y agregarlas
+            for(int iX = Integer.parseInt(fileIn.readLine()); iX > 0; iX--) {
+                lklDirections.add(Direction.values()
+                                      [Integer.parseInt(fileIn.readLine())]);
+            }
+            
+            // Vaciar la lista de lklSnake actual
+            lklSnake.clear();
+            
+            // Recibir cantidad de nodos de lklSnake nuevos y agregarlas
+            for(int iX = Integer.parseInt(fileIn.readLine()); iX > 0; iX--){
+                // Carga X
+                int iRow = Integer.parseInt(fileIn.readLine());
+                // Carga Y
+                int iCol = Integer.parseInt(fileIn.readLine());
+                // Añadir
+                lklSnake.add(new Point(iRow, iCol));
+            }
+            
+            loadSnakeDirectionsAndBoard(fileIn);
+            
+            // Cerrar el archivo
+            fileIn.close();
+        }
+        catch (FileNotFoundException ex){
+        // Si no se encuentra archivo guardado se debe avisar al usuario
+        // que no hay datos guardados con ese nombre
+        JOptionPane.showMessageDialog(null, "No existen datos de un juego " +
+                "guardado con el nombre de: " + nombre, "Error",
+                JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+    
+    /**
+     * loadSnakeDirectionsAndBoard
+     * 
+     * Loads the actual board and the snake and it's a continuation from
+     * loadGame()
+     * 
+     * @param fileIn objeto de tipo BufferedReader que mantiene el flujo
+     * de datos entre un archivo y el programa
+     */
+    public void loadSnakeDirectionsAndBoard(BufferedReader fileIn)
+                                                        throws IOException {
+        // Poner todos los tiles del board como nulo
+        for(int iI = 0; iI < bpBoard.iROW_COUNT ; iI++) {
+            for(int iJ = 0; iJ < bpBoard.iCOL_COUNT; iJ++) {
+                bpBoard.nullTile(iJ, iI);
+            }
+        }
+            
+        // Cargar longitud de lklDirections
+        fileOut.println(Integer.toString(lklDirections.size()));
+            
+        // Cargar todas las direcciones como su numero ordinal del archivo
+        for(int iI = 0; iI < lklDirections.size(); iI++) {
+            fileOut.println(Integer.toString(lklDirections.get(iI).ordinal()));
+        }
+            
+        // Cargar longitud de lklSnake
+        fileOut.println(Integer.toString(lklSnake.size()));
+            
+        // Cargar todo el snake
+        for(int iI = 0; iI < lklSnake.size(); iI++) {
+            // Carga X
+            fileOut.println(Integer.toString(lklSnake.get(iI).x));
+            // Carga Y
+            fileOut.println(Integer.toString(lklSnake.get(iI).y));
+        }
+            
+        // Lee la siguiente linea
+        String sScan = fileIn.readLine();
+        // Mientras no se acabe el archivo...
+        while(sScan != null) { // Cargar X
+            // Cargar Y
+            int iColum = Integer.parseInt(fileIn.readLine());
+            // Poner el tile con el numero ordinal guardado en el archivo
+            bpBoard.setTile(iColum, Integer.parseInt(sScan), TileType.values()
+                                      [Integer.parseInt(fileIn.readLine())]);
+            // Leer la siguiente linea
+            sScan = fileIn.readLine();
+        }
     }
 	
     /**
@@ -594,17 +828,10 @@ public class SnakeGame extends JFrame {
 	for(int x = 0; x < BoardPanel.iCOL_COUNT; x++) {
             for(int y = 0; y < BoardPanel.iROW_COUNT; y++) {
 		TileType type = bpBoard.getTile(x, y);
-		if(type == null || type == TileType.Fruit1|| type == TileType.Fruit2|| type == TileType.Fruit3) {
+		if(type == null || type == TileType.Fruit1 ||
+                        type == TileType.Fruit2|| type == TileType.Fruit3) {
                     if(++freeFound == index) {
-                        
-                            //int RandomFruit = (int) (Math.random() * 3) + 1;
-                            
-                            
-                                
-                                bpBoard.setTile(x, y, TileType.Fruit1);
-                            
-                            
-                        
+                        bpBoard.setTile(x, y, TileType.Fruit1);
 			break;
                     }
 		}
@@ -637,7 +864,8 @@ public class SnakeGame extends JFrame {
 	for(int x = 0; x < BoardPanel.iCOL_COUNT; x++) {
             for(int y = 0; y < BoardPanel.iROW_COUNT; y++) {
 		TileType type = bpBoard.getTile(x, y);
-		if(type == null || type == TileType.Fruit1|| type == TileType.Fruit2|| type == TileType.Fruit3) {
+		if(type == null || type == TileType.Fruit1 ||
+                        type == TileType.Fruit2|| type == TileType.Fruit3) {
                     if(++freeFound == index) {
                         
                             //int RandomFruit = (int) (Math.random() * 3) + 1;
@@ -681,7 +909,8 @@ public class SnakeGame extends JFrame {
 	for(int x = 0; x < BoardPanel.iCOL_COUNT; x++) {
             for(int y = 0; y < BoardPanel.iROW_COUNT; y++) {
 		TileType type = bpBoard.getTile(x, y);
-		if(type == null || type == TileType.Fruit1|| type == TileType.Fruit2|| type == TileType.Fruit3) {
+		if(type == null || type == TileType.Fruit1 ||
+                        type == TileType.Fruit2|| type == TileType.Fruit3) {
                     if(++freeFound == index) {
                         
                             //int RandomFruit = (int) (Math.random() * 3) + 1;
@@ -725,18 +954,10 @@ public class SnakeGame extends JFrame {
 	for(int x = 0; x < BoardPanel.iCOL_COUNT; x++) {
             for(int y = 0; y < BoardPanel.iROW_COUNT; y++) {
 		TileType type = bpBoard.getTile(x, y);
-		if(type == null || type == TileType.Fruit1|| type == TileType.Fruit2|| type == TileType.Fruit3) {
-                    if(++freeFound == index) {
-                        
-                            //int RandomFruit = (int) (Math.random() * 3) + 1;
-                            
-                            
-                                
-                                bpBoard.setTile(x, y, TileType.BadFruit);
-                                
-                            
-                            
-                        
+		if(type == null || type == TileType.Fruit1 ||
+                        type == TileType.Fruit2|| type == TileType.Fruit3) {
+                    if(++freeFound == index) {                        
+                        bpBoard.setTile(x, y, TileType.BadFruit);
 			break;
                     }
 		}

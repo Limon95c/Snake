@@ -54,9 +54,9 @@ public class SidePanel extends JPanel {
             setBackground(Color.BLACK);
     }
 	
-    private static final int iSTATISTICS_OFFSET = 150;
+    private static final int iSTATISTICS_OFFSET = 130;
 
-    private static final int iCONTROLS_OFFSET = 320;
+    private static final int iCONTROLS_OFFSET = 260;
 	
     private static final int iMESSAGE_STRIDE = 30;
 	
@@ -77,8 +77,8 @@ public class SidePanel extends JPanel {
 	 * Draw the snkGame name onto the window.
 	 */
 	g.setFont(fLARGE_FONT);
-	g.drawString("Snake Game", getWidth() / 2 -
-                     g.getFontMetrics().stringWidth("Snake Game") / 2, 50);
+	g.drawString("Rocket Snake", getWidth() / 2 -
+                     g.getFontMetrics().stringWidth("Rocket Snake") / 2, 50);
 		
 	/*
 	 * Draw the categories onto the window.
@@ -111,6 +111,10 @@ public class SidePanel extends JPanel {
 	g.drawString("Move Right: D / Right Arrowkey", iLARGE_OFFSET,
                      drawY += iMESSAGE_STRIDE);
 	g.drawString("Pause Game: P", iLARGE_OFFSET,
+                     drawY += iMESSAGE_STRIDE);
+        g.drawString("Save Game: G", iLARGE_OFFSET,
+                     drawY += iMESSAGE_STRIDE);
+        g.drawString("Load Game: C", iLARGE_OFFSET,
                      drawY += iMESSAGE_STRIDE);
     }
 }

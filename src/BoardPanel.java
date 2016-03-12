@@ -69,38 +69,36 @@ public class BoardPanel extends JPanel {
      */
     private TileType[] ttArrTiles;
     
-    private Image imaCoheteArriba = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("cohete1.png"));
+    // Imagen del cohete hacia arriba
+    private Image imaCoheteArriba;
     
-    private Image imaCoheteDerecha = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("cohete2.png"));
+    // Imagen del cohete a la derecha
+    private Image imaCoheteDerecha;
     
-    private Image imaCoheteAbajo = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("cohete3.png"));
+    // Imagen del cohete hacia abajo
+    private Image imaCoheteAbajo;
     
-    private Image imaCoheteIzquierda = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("cohete4.png"));
+    // Imagen del cohete hacia la izquierda
+    private Image imaCoheteIzquierda;
     
-    private Image imaFuego = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("Fuego.png"));
+    // Imagen del fuego
+    private Image imaFuego;
     
-    private Image imaComida = Toolkit.getDefaultToolkit().getImage(this.getClass().
-            getResource("Food.png")); 
+    // Imagen de la comida
+    private Image imaComida;
     
-    private Image imaBattery = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("Battery.png"));
+    // Imagen de la bateria
+    private Image imaBattery;
     
-    private Image imaFuel = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("Fuel.png"));  
+    // Imagen del combustible 
+    private Image imaFuel;
     
-    private Image imaTierra = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("Tierra.gif"));  
+    // Imagen de la tierra
+    private Image imaTierra;
     
-    private Image imaFondo = Toolkit.getDefaultToolkit().getImage(this.getClass().
-               getResource("Fondo.png"));  
+    // Imagen del fondo
+    private Image imaFondo;  
     
-    
-		
     /**
      * Creates a new BoardPanel instance.
      * @param snkGame The SnakeGame instance.
@@ -112,6 +110,46 @@ public class BoardPanel extends JPanel {
 	setPreferredSize(new Dimension(iCOL_COUNT * iTILE_SIZE,
                                        iROW_COUNT * iTILE_SIZE));
 	setBackground(Color.BLACK);
+        
+        // Crear imagen del cohete hacia arriba
+        imaCoheteArriba = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete1.png"));
+    
+        // Crear imagen del cohete a la derecha
+        imaCoheteDerecha = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete2.png"));
+    
+        // Crear imagen del cohete hacia abajo
+        imaCoheteAbajo = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("cohete3.png"));
+    
+        // Crear imagen del cohete hacia la izquierda
+        imaCoheteIzquierda = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("cohete4.png"));
+    
+        // Crear imagen del fuego
+        imaFuego = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Fuego.png"));
+    
+        // Crear imagen de la comida
+        imaComida = Toolkit.getDefaultToolkit().getImage(this.getClass().
+            getResource("Food.png")); 
+    
+        // Crear imagen de la bateria
+        imaBattery = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Battery.png"));
+    
+        // Crear imagen del combustible 
+        imaFuel = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Fuel.png"));  
+    
+        // Crear imagen de la tierra
+        imaTierra = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Tierra.gif"));  
+    
+        // Crear imagen del fondo
+        imaFondo = Toolkit.getDefaultToolkit().getImage(this.getClass().
+               getResource("Fondo.png"));  
     }
 	
     /**
@@ -210,7 +248,7 @@ public class BoardPanel extends JPanel {
             String largeMessage = null;
             String smallMessage = null;
             if(snkGame.bIsNewGame()) {
-		largeMessage = "Snake Game!";
+		largeMessage = "Rocket Snake!";
 		smallMessage = "Press Enter to Start";
             }
             else if(snkGame.bIsGameOver()) {
@@ -252,182 +290,77 @@ public class BoardPanel extends JPanel {
 	 * overly complex code to handle everything.
 	 */
 	switch(type) {
-		
-            /*
-             * A fruit is depicted as a small red circle that with a bit of 
-             * padding on each side.
-             */
+            
             case Fruit1:
-                
-		/*g.setColor(Color.RED);
-		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
-                
                 if(imaComida!=null){
-                    
-                    g.drawImage(imaComida, x, y, 20,
-                            20, this);
+                    g.drawImage(imaComida, x, y, 20, 20, this);
                 }
-                  
-                
 		break;
                 
             case Fruit2:
-                
-                /*g.setColor(Color.BLUE);
-		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
-                
                 if(imaFuel!=null){
-                    
-                    g.drawImage(imaFuel, x, y, 20,
-                            20, this); 
+                    g.drawImage(imaFuel, x, y, 20, 20, this); 
                 }
-                
-                
 		break;
                 
             case Fruit3:
-                
-                /*g.setColor(Color.YELLOW);
-		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
-                
-                if(imaBattery!=null){
-                    
-                    g.drawImage(imaBattery, x, y, 20,
-                            20, this); 
-                    
+                if(imaBattery!=null){    
+                    g.drawImage(imaBattery, x, y, 20, 20, this); 
                 }
-                
-                
 		break;
             
             case BadFruit:
-                /*g.setColor(Color.WHITE);
-		g.fillOval(x + 2, y + 2, iTILE_SIZE - 4, iTILE_SIZE - 4); */
-                
                 if(imaTierra!=null){
-                    
-                    g.drawImage(imaTierra, x, y, 20,
-                            20, this); 
+                    g.drawImage(imaTierra, x, y, 20, 20, this); 
                 }
-                
 		break;
-		
-            /*
-             * The snake body is depicted as a green square that takes up the
-             * entire tile.
-             */
+                
             case SnakeBody:
-		/*g.setColor(Color.GREEN);
-		g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE); */
-                g.drawImage(imaFuego, x, y, 20,
-                       20, this);
+                if(imaFuego != null){
+                    g.drawImage(imaFuego, x, y, 20, 20, this);
+                }
 		break;
-			
-            /*
-             * The snake head is depicted similarly to the body, but with two
-             * lines (representing eyes) that indicate it's direction.
-             */
+                
             case SnakeHead:
-		//Fill the tile in with green.
-                
-		//g.setColor(Color.GREEN);
-                
-		//g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE);
-                
-                
-		//Set the color to black so that we can start drawing the eyes.
-		//g.setColor(Color.BLACK);
-			
-		/*
-		 * The eyes will always 'face' the direction that the snake is
-		 * moving.
-		 * 
-		 * Vertical lines indicate that it's facing North or South, and
-		 * Horizontal lines indicate that it's facing East or West.
-		 * 
-		 * Additionally, the eyes will be closer to whichever edge it's
-		 * facing.
-		 * 
-		 * Drawing the eyes is fairly simple, but is a bit difficult to
-		 * explain. The basic process is this:
-		 * 
-		 * First, we add (or subtract) iEYE_SMALL_INSET to or from the
-		 * side of the tile representing the direction we're facing.
-		 * This will be constant for both eyes, and is represented by
-		 * the variable 'baseX' or 'baseY' (depending on orientation).
-		 * 
-		 * Next, we add (or subtract) iEYE_LARGE_INSET to and from the
-		 * two neighboring directions (Example; East and West if we're
-		 * facing north).
-		 * 
-		 * Finally, we draw a line from the base offset that is 
-		 * iEYE_LENGTH pixels in length at whatever the offset is from 
-		 * the neighboring directions.
-		 * 
-		 */
 		switch(snkGame.getDirection()) {
                     case North: {
-			/*int baseY = y + iEYE_SMALL_INSET;
-			g.drawLine(x + iEYE_LARGE_INSET,
-                                   baseY, x + iEYE_LARGE_INSET,
-                                   baseY + iEYE_LENGTH);
-			g.drawLine(x + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseY, x + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseY + iEYE_LENGTH);*/
-                        g.drawImage(imaCoheteArriba, x, y, 20,
-                            20, this);
-                        
-                        
-			break;
+                        if(imaCoheteArriba != null) {
+                            g.drawImage(imaCoheteArriba, x, y, 20, 20, this);
+                        }
+                        break;
                     }
 				
                     case South: {
-                        
-			/*int baseY = y + iTILE_SIZE - iEYE_SMALL_INSET;
-			g.drawLine(x + iEYE_LARGE_INSET,
-                                   baseY, x + iEYE_LARGE_INSET,
-                                   baseY - iEYE_LENGTH);
-			g.drawLine(x + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseY, x + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseY - iEYE_LENGTH); */
-                        
-                        g.drawImage(imaCoheteAbajo, x, y, 20,
-                            20, this);
-                        
+                        if(imaCoheteAbajo != null) {
+                            g.drawImage(imaCoheteAbajo, x, y, 20, 20, this);
+                        }
 			break;
                     }
 			
                     case West: {
-                        
-			/*int baseX = x + iEYE_SMALL_INSET;
-			g.drawLine(baseX, y + iEYE_LARGE_INSET,
-                                   baseX + iEYE_LENGTH, y + iEYE_LARGE_INSET);
-			g.drawLine(baseX, y + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseX + iEYE_LENGTH,
-                                   y + iTILE_SIZE - iEYE_LARGE_INSET);*/
-                        
-                        g.drawImage(imaCoheteIzquierda, x, y, 20,
-                            20, this);
-                        
+                        if(imaCoheteIzquierda != null) {
+                            g.drawImage(imaCoheteIzquierda, x, y, 20, 20, this);
+                        }
 			break;
                     }
 				
                     case East: {
-                        /*
-			int baseX = x + iTILE_SIZE - iEYE_SMALL_INSET;
-			g.drawLine(baseX, y + iEYE_LARGE_INSET,
-                                   baseX - iEYE_LENGTH, y + iEYE_LARGE_INSET);
-			g.drawLine(baseX, y + iTILE_SIZE - iEYE_LARGE_INSET,
-                                   baseX - iEYE_LENGTH,
-                                   y + iTILE_SIZE - iEYE_LARGE_INSET); */
-                        
-                        g.drawImage(imaCoheteDerecha, x, y, 20,
-                            20, this);
-                        
+                        if(imaCoheteDerecha != null) {
+                            g.drawImage(imaCoheteDerecha, x, y, 20, 20, this);
+                        }
 			break;
                     }
 		}
 		break;
         }
+    }
+    
+    /**
+     * Sets a tilTile located at the desired column and iRow in null
+     * @param iX The column.
+     * @param iY The iRow.
+     */
+    public void nullTile(int  iX, int iY) {
+	ttArrTiles[iY * iROW_COUNT + iX] = null;
     }
 }
