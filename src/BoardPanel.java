@@ -291,59 +291,69 @@ public class BoardPanel extends JPanel {
 	 */
 	switch(type) {
             
+            //Dibuja la Comida, Objeto bueno que da Puntos
             case Fruit1:
                 if(imaComida!=null){
                     g.drawImage(imaComida, x, y, 20, 20, this);
                 }
 		break;
-                
+            
+           //Dibuja el Combustible, Objeto bueno que da Puntos     
             case Fruit2:
                 if(imaFuel!=null){
                     g.drawImage(imaFuel, x, y, 20, 20, this); 
                 }
 		break;
-                
+           
+           //Dibuja el Combustible, Objeto bueno que da Puntos
             case Fruit3:
                 if(imaBattery!=null){    
                     g.drawImage(imaBattery, x, y, 20, 20, this); 
                 }
 		break;
             
+            //Dibuja el Planeto, Objeto Malo que te hace perder el juego
             case BadFruit:
                 if(imaTierra!=null){
                     g.drawImage(imaTierra, x, y, 20, 20, this); 
                 }
 		break;
                 
+            //Dibuja el cuerpo del Jugador
             case SnakeBody:
                 if(imaFuego != null){
                     g.drawImage(imaFuego, x, y, 20, 20, this);
                 }
 		break;
-                
+            
+            //Sibuja la Cabeza del Jugador
             case SnakeHead:
 		switch(snkGame.getDirection()) {
+                    
+                    //Si esta volteando hacia Arriba
                     case North: {
                         if(imaCoheteArriba != null) {
                             g.drawImage(imaCoheteArriba, x, y, 20, 20, this);
                         }
                         break;
                     }
-				
+                    //Si esta volteando hacia Abajo
                     case South: {
                         if(imaCoheteAbajo != null) {
                             g.drawImage(imaCoheteAbajo, x, y, 20, 20, this);
                         }
 			break;
                     }
-			
+                    
+                    //Si esta volteando hacia la Izquierda
                     case West: {
                         if(imaCoheteIzquierda != null) {
                             g.drawImage(imaCoheteIzquierda, x, y, 20, 20, this);
                         }
 			break;
                     }
-				
+		    
+                    ////Si esta volteando hacia la Derecha
                     case East: {
                         if(imaCoheteDerecha != null) {
                             g.drawImage(imaCoheteDerecha, x, y, 20, 20, this);

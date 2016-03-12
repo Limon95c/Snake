@@ -96,9 +96,9 @@ public class SidePanel extends JPanel {
 	int drawY = iSTATISTICS_OFFSET;
 	g.drawString("Total Score: " + snkGame.getScore(),
                      iLARGE_OFFSET, drawY += iMESSAGE_STRIDE);
-	g.drawString("Fruit Eaten: " + snkGame.getFruitsEaten(),
+	g.drawString("Items Taken: " + snkGame.getFruitsEaten(),
                      iLARGE_OFFSET, drawY += iMESSAGE_STRIDE);
-	g.drawString("Fruit Score: " + snkGame.getNextFruitScore(),
+	g.drawString("Score: " + snkGame.getNextFruitScore(),
                      iLARGE_OFFSET, drawY += iMESSAGE_STRIDE);
 	//Draw the content for the controls category.
 	drawY = iCONTROLS_OFFSET;
@@ -116,5 +116,9 @@ public class SidePanel extends JPanel {
                      drawY += iMESSAGE_STRIDE);
         g.drawString("Load Game: C", iLARGE_OFFSET,
                      drawY += iMESSAGE_STRIDE);
+        
+        g.setColor(Color.RED);
+        g.drawString("Note: DON'T TOUCH THE PLANET", 25,
+                     100);
     }
 }

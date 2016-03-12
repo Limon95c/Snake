@@ -135,6 +135,15 @@ public class SnakeGame extends JFrame {
     //He gets
     private int iSizeController =0 ;
     
+    //The Audio used in the game
+    
+    //GameOver SoundClip
+    private SoundClip auGameOver; 
+    //Catching a good item SoundClip
+    private SoundClip auGrab;
+    //Background Song 
+    private SoundClip auSong;
+    
 	
     /**
      * Creates a new SnakeGame instance. Creates a new window,
@@ -142,9 +151,15 @@ public class SnakeGame extends JFrame {
      */
     private SnakeGame() {
 	super("Rocket Snake");
+        //this.<error> = new SoundClip ("GameOver.wav");
 	setLayout(new BorderLayout());
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setResizable(false);
+        
+        //Assign the Corresponding SoundClip to our Sound Data
+        auGameOver = new SoundClip ("GameOver.wav");
+        auGrab = new SoundClip ("Grab.wav");
+        auSong = new SoundClip ("Song.wav");
 				
 	/*
 	 * Initialize the game's panels and add them to the window.
@@ -250,7 +265,22 @@ public class SnakeGame extends JFrame {
                      */
                     case KeyEvent.VK_P:
 			if(!bIsGameOver) {
+                            
+                            //If the Game is Getting Paused
+                            if(!bIsPaused){
+                                
+                                //Stop the Song
+                                auSong.stop();
+                            }
+                            //If the Game is Resuming
+                            else {
+                                
+                                //Play the Song
+                                auSong.play();
+                            }
+                            
                             bIsPaused = !bIsPaused;
+                            
                             clkLogicTimer.setPaused(bIsPaused);
 			}
                     break;
@@ -273,6 +303,10 @@ public class SnakeGame extends JFrame {
                                 // Set everything to pause and saveGame()
                                 clkLogicTimer.setPaused(true);
                                 bIsPaused = true;
+                                
+                                //Stop the Song when Saving
+                                auSong.stop();
+                                
                                 saveGame();
                             }
                             catch (IOException ex) {
@@ -293,6 +327,10 @@ public class SnakeGame extends JFrame {
                                 // Set everything to pause and loadGame()
                                 clkLogicTimer.setPaused(true);
                                 bIsPaused = true;
+                                
+                                //Stop the Song when Loading
+                                auSong.stop();
+                                
                                 loadGame();
                             }
                             catch (IOException ex) {
@@ -327,7 +365,11 @@ public class SnakeGame extends JFrame {
 	this.lklDirections = new LinkedList<>();
 	this.clkLogicTimer = new Clock(9.0f);
 	this.bIsNewGame = true;
-		
+        
+        //Set the Song to Loop
+        auSong.setLooping(true);
+        
+        
 	//Set the timer to paused initially.
 	clkLogicTimer.setPaused(true);
 
@@ -398,27 +440,34 @@ public class SnakeGame extends JFrame {
 	if(collision == TileType.Fruit1) {
             iFruitsEaten++;
             iScore += iNextFruitScore;
+            auGrab.play();
             spawnFruit1();
 	}
         else if (collision == TileType.Fruit2) {
             
             iFruitsEaten++;
             iScore += iNextFruitScore;
+            auGrab.play();
             spawnFruit2();
         }
         else if (collision == TileType.Fruit3) {
             
             iFruitsEaten++;
             iScore += iNextFruitScore;
+            auGrab.play();
             spawnFruit3();
         }
         else if(collision==TileType.BadFruit){
             bIsGameOver=true;
             clkLogicTimer.setPaused(true);
+            auGameOver.play();
+            auSong.stop();
         }
         else if(collision == TileType.SnakeBody) {
             bIsGameOver = true;
             clkLogicTimer.setPaused(true);
+            auGameOver.play();
+            auSong.stop();
 	}
         else if(iNextFruitScore > 10) {
             iNextFruitScore--;
@@ -545,6 +594,9 @@ public class SnakeGame extends JFrame {
 	 */
 	this.bIsNewGame = false;
 	this.bIsGameOver = false;
+        
+        //Start the song Again
+        auSong.play();
 		
 	/*
 	 * Create the head at the center of the bpBoard.
